@@ -20,14 +20,14 @@ public class TennisGame1 implements TennisGame {
 
     public String getScore() {
         String score = "";
-        if (score1 == score2) {
-            score = RetornarValorEmpate(score1);        /*Caso Empate*/
+        if (CondicionEmpate()) {
+            score = RetornarValorEmpate(score1);                            /*Caso Empate*/
         }
-        else if (score1 >= 4 || score2 >= 4){
-            score = ObtenerGanador(score1,score2);      /*Caso Ganador*/
+        else if (CondicionGanador()){
+            score = ObtenerGanador(score1,score2);                          /*Caso Ganador*/
         }
         else {
-            score = Puntuacion(score1,score2);          /*Caso General, va mostrando puntuacion*/
+            score = Puntuacion(score1) + "-" + Puntuacion(score2);          /*Caso General, va mostrando puntuacion*/
         }
         return score;
     }
@@ -43,6 +43,14 @@ public class TennisGame1 implements TennisGame {
             default:
                 return "Deuce";
         }
+    }
+
+    public boolean CondicionEmpate(){
+        return score1 == score2;
+    }
+
+    public boolean CondicionGanador(){
+        return score1 >= 4 || score2 >= 4;
     }
 
     public String ObtenerGanador(int score1,int score2){
@@ -63,13 +71,7 @@ public class TennisGame1 implements TennisGame {
         return score;
     }
 
-    public String Puntuacion(int score1, int score2){
-        String score = "";
-        score = PuntuacionATexto(score1) + "-" + PuntuacionATexto(score2);
-        return score;
-    }
-
-    public String PuntuacionATexto(int score){
+    public String Puntuacion(int score){
         switch (score) {
             case 0:
                 return "Love";
