@@ -1,36 +1,66 @@
 
 public class TennisGame3 implements TennisGame {
     
-    private int p2;
-    private int p1;
-    private String p1N;
-    private String p2N;
+    private int P2point;
+    private int P1point;
+    private String[] puntos = new String[]{"Love", "Fifteen", "Thirty", "Forty"};
+    private String Player1Name;
+    private String Player2Name;
 
     public TennisGame3(String p1N, String p2N) {
-        this.p1N = p1N;
-        this.p2N = p2N;
+        this.Player1Name = p1N;
+        this.Player2Name = p2N;
     }
 
     public String getScore() {
-        String s;
-        if (p1 < 4 && p2 < 4 && !(p1 + p2 == 6)) {
-            String[] p = new String[]{"Love", "Fifteen", "Thirty", "Forty"}; 
-            s = p[p1];
-            return (p1 == p2) ? s + "-All" : s + "-" + p[p2];
+        String score = "";
+        if (CondicionJuego()){
+            score = EmpateOJuego();
         } else {
-            if (p1 == p2)
+            if (CondicionPuntojeIgual()) {
                 return "Deuce";
-            s = p1 > p2 ? p1N : p2N;
-            return ((p1-p2)*(p1-p2) == 1) ? "Advantage " + s : "Win for " + s;
+            }
+            score = VentajaOGanador();
         }
+        return score;
     }
     
     public void wonPoint(String playerName) {
         if (playerName == "player1")
-            this.p1 += 1;
+            this.P1point += 1;
         else
-            this.p2 += 1;
-        
+            this.P2point += 1;
     }
 
+    public boolean CondicionJuego(){
+        return P1point < 4 && P2point < 4 && !(P1point + P2point == 6);
+    }
+
+    public boolean CondicionPuntojeIgual(){
+        return P1point == P2point;
+    }
+
+    public boolean CondicionVentaja(){
+        return (P1point - P2point)*(P1point - P2point) == 1;
+    }
+
+    public String Empate(){
+        return puntos[P1point] + "-All";
+    }
+
+    public String Puntuacion(){
+        return puntos[P1point] + "-" + puntos[P2point];
+    }
+
+    public String MayorPuntacion(){
+        return P1point > P2point ? Player1Name : Player2Name;
+    }
+
+    public String VentajaOGanador(){
+        return (CondicionVentaja()) ? "Advantage " + MayorPuntacion() : "Win for " + MayorPuntacion();
+    }
+
+    public String EmpateOJuego(){
+        return (CondicionPuntojeIgual()) ? Empate() : Puntuacion();
+    }
 }
